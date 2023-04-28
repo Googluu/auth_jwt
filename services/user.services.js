@@ -1,7 +1,9 @@
 const bcrypt = require("bcrypt");
-const { unauthorized } = require("@hapi/boom");
+const jwt = require("jsonwebtoken");
+const { unauthorized, notFound } = require("@hapi/boom");
 
 const User = require("../models/User");
+const { config } = require("../config");
 
 class UserService {
   constructor() {}
@@ -21,7 +23,23 @@ class UserService {
     if (!user) throw unauthorized();
     const isPasswordValid = bcrypt.compareSync(password, user.password);
     if (!isPasswordValid) throw unauthorized();
-    return user;
+    const payload = {
+      sub: user._id,
+    };
+    const token = jwt.sign(payload, config.jwtSecret, { expiresIn: "1hr" });
+    return {
+      user,
+      token,
+    };
+  }
+
+  verifyToken(headers) {
+    const token = headers.split(" ")[1];
+    if (!token) throw notFound("Token not found");
+    jwt.verify(String(token), config.jwtSecret, (err, user) => {
+      if (err) throw unauthorized();
+      console.log(user._id);
+    });
   }
 }
 
