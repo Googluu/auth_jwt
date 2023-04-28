@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const { unauthorized } = require("@hapi/boom");
 
 const User = require("../models/User");
 
@@ -13,6 +14,14 @@ class UserService {
     });
     const response = await newUser.save();
     return response;
+  }
+
+  async login(email, password) {
+    const user = await User.findOne({ email });
+    if (!user) throw unauthorized();
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
+    if (!isPasswordValid) throw unauthorized();
+    return user;
   }
 }
 
