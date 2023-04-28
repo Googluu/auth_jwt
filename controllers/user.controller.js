@@ -13,8 +13,22 @@ const signup = async (req, res, next) => {
     const user = await service.signup(userData);
     res.status(201).json({ message: user });
   } catch (error) {
-    console.log(error);
+    next(error);
+  }
+};
+
+const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const user = await service.login(email, password);
+    return res.status(200).json({
+      //   user,
+      message: "Successfully Logged In",
+    });
+  } catch (error) {
+    next(error);
   }
 };
 
 exports.signup = signup;
+exports.login = login;
