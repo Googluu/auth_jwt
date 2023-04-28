@@ -4,10 +4,11 @@ const service = new UserService();
 
 const signup = async (req, res, next) => {
   try {
+    const { name, email, password } = req.body;
     const userData = {
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
+      name,
+      email,
+      password,
     };
     const user = await service.signup(userData);
     res.status(201).json({ message: user });
