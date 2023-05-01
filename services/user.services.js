@@ -33,12 +33,12 @@ class UserService {
     };
   }
 
-  verifyToken(headers) {
+  async verifyToken(headers) {
     const token = headers.split(" ")[1];
     if (!token) throw notFound("Token not found");
-    jwt.verify(String(token), config.jwtSecret, (err, user) => {
+    jwt.verify(token, config.jwtSecret, (err, user) => {
       if (err) throw unauthorized();
-      console.log(user._id);
+      console.log(user.sub);
     });
   }
 }

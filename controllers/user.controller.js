@@ -37,12 +37,7 @@ const login = async (req, res, next) => {
 const verifyToken = async (req, res, next) => {
   try {
     const headers = req.headers["authorization"];
-    const token = headers.split(" ")[1];
-    if (!token) throw notFound("Token not found");
-    jwt.verify(String(token), config.jwtSecret, (err, user) => {
-      if (err) throw unauthorized();
-      console.log(user._id);
-    });
+    const user = await service.verifyToken(headers);
   } catch (error) {
     next(error);
   }
