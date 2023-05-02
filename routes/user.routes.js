@@ -4,6 +4,7 @@ const {
   signup,
   login,
   verifyToken,
+  // getUser,
 } = require("../controllers/user.controller");
 const checkEmailExists = require("../middlewares/checkEmailExists");
 
