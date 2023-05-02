@@ -2,7 +2,7 @@ const User = require("../models/User");
 
 const checkEmailExists = async (req, res, next) => {
   try {
-    const email = req.body.email;
+    const { email } = req.body;
     const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ error: "El email ya está en uso" });
