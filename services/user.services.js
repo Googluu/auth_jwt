@@ -36,10 +36,10 @@ class UserService {
   async verifyToken(headers) {
     const token = headers.split(" ")[1];
     if (!token) throw notFound("Token not found");
-    jwt.verify(token, config.jwtSecret, (err, user) => {
-      if (err) throw unauthorized();
-      console.log(user.sub);
-    });
+    const user = jwt.verify(token, config.jwtSecret);
+    if (!user) throw unauthorized();
+    console.log(user.sub);
+    return user;
   }
 
   async getUser(userId) {

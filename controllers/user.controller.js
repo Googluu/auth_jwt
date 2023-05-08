@@ -21,10 +21,7 @@ const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await service.login(email, password);
-    return res.status(200).json({
-      user,
-      message: "Successfully Logged In",
-    });
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }
@@ -33,7 +30,8 @@ const login = async (req, res, next) => {
 const verifyToken = async (req, res, next) => {
   try {
     const headers = req.headers["authorization"];
-    await service.verifyToken(headers);
+    const user = await service.verifyToken(headers);
+    req.sub = user.sub; // Aquí asignamos el ID del usuario a req.sub
   } catch (error) {
     next(error);
   }
@@ -41,9 +39,9 @@ const verifyToken = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
   try {
-    const userId = req.user.user._id;
+    const userId = req.sub;
     const user = await service.getUser(userId);
-    res.json({ user });
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }
