@@ -36,20 +36,17 @@ class UserService {
   async verifyToken(headers) {
     const token = headers.split(" ")[1];
     if (!token) throw notFound("Token not found");
-    const user = jwt.verify(token, config.jwtSecret, (err, user) => {
+    jwt.verify(token, config.jwtSecret, (err, user) => {
       if (err) throw unauthorized();
       console.log(user.sub);
     });
-    const getByUser = await User.findById(user.sub, "-password");
-    if (!getByUser) throw notFound("User not found");
-    return getByUser;
   }
 
-  // async getUser(userId) {
-  //   const user = await this.verifyToken(userId, "-password");
-  //   if (!user) throw notFound("User not found");
-  //   return user;
-  // }
+  async getUser(userId) {
+    const user = await User.findById(userId, "-password");
+    if (!user) throw notFound("User not found");
+    return user;
+  }
 }
 
 module.exports = UserService;

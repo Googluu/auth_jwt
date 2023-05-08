@@ -4,7 +4,7 @@ const {
   signup,
   login,
   verifyToken,
-  // getUser,
+  getUser,
 } = require("../controllers/user.controller");
 const checkEmailExists = require("../middlewares/checkEmailExists");
 
@@ -12,6 +12,6 @@ const router = Router();
 
 router.post("/signup", checkEmailExists, signup);
 router.post("/login", login);
-router.get("/user", verifyToken);
+router.get("/user", verifyToken, getUser);
 
 module.exports = router;

@@ -33,24 +33,23 @@ const login = async (req, res, next) => {
 const verifyToken = async (req, res, next) => {
   try {
     const headers = req.headers["authorization"];
-    const user = await service.verifyToken(headers);
-    res.json(user);
+    await service.verifyToken(headers);
   } catch (error) {
     next(error);
   }
 };
 
-// const getUser = async (req, res, next) => {
-//   try {
-//     const userId = req.sub;
-//     const user = await service.getUser(userId);
-//     res.json(user);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+const getUser = async (req, res, next) => {
+  try {
+    const userId = req.user.user._id;
+    const user = await service.getUser(userId);
+    res.json({ user });
+  } catch (error) {
+    next(error);
+  }
+};
 
 exports.signup = signup;
 exports.login = login;
 exports.verifyToken = verifyToken;
-// exports.getUser = getUser;
+exports.getUser = getUser;
