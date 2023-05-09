@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { AppBar, Toolbar, Typography, Box, Tabs, Tab } from "@mui/material";
 
 const Header = () => {
@@ -16,8 +17,8 @@ const Header = () => {
               value={value}
               textColor="inherit"
             >
-              <Tab label="Login" />
-              <Tab label="Signup" />
+              <Tab to="/login" LinkComponent={Link} label="Login" />
+              <Tab to="/signup" LinkComponent={Link} label="Signup" />
             </Tabs>
           </Box>
         </Toolbar>
