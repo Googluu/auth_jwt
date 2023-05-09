@@ -26,7 +26,7 @@ class UserService {
     const payload = {
       sub: user._id,
     };
-    const token = jwt.sign(payload, config.jwtSecret, { expiresIn: "1hr" });
+    const token = jwt.sign(payload, config.jwtSecret, { expiresIn: "30s" });
     res.cookie(String(user._id), token, {
       path: "/",
       expires: new Date(Date.now() + 1000 * 30),
@@ -39,8 +39,9 @@ class UserService {
     };
   }
 
-  async verifyToken(headers) {
-    const token = headers.split(" ")[1];
+  async verifyToken(cookies) {
+    const token = cookies.split("=")[1];
+    console.log(token);
     if (!token) throw notFound("Token not found");
     const user = jwt.verify(token, config.jwtSecret);
     if (!user) throw unauthorized();

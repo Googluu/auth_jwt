@@ -29,8 +29,9 @@ const login = async (req, res, next) => {
 
 const verifyToken = async (req, res, next) => {
   try {
-    const headers = req.headers["authorization"];
-    const user = await service.verifyToken(headers);
+    const cookies = req.headers.cookie;
+    // const headers = req.headers["authorization"];
+    const user = await service.verifyToken(cookies);
     req.sub = user.sub;
   } catch (error) {
     next(error);
