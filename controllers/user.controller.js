@@ -31,17 +31,20 @@ const verifyToken = async (req, res, next) => {
   try {
     const headers = req.headers["authorization"];
     const user = await service.verifyToken(headers);
-    req.sub = user.sub; // Aquí asignamos el ID del usuario a req.sub
+    req.sub = user.sub;
+    // console.log(req.sub);
   } catch (error) {
     next(error);
   }
+  next();
 };
 
 const getUser = async (req, res, next) => {
   try {
     const userId = req.sub;
-    const user = await service.getUser(userId);
-    res.status(200).json(user);
+    console.log(userId);
+    const user2 = await service.getUser(userId);
+    res.status(200).json(user2);
   } catch (error) {
     next(error);
   }

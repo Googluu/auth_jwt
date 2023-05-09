@@ -38,7 +38,6 @@ class UserService {
     if (!token) throw notFound("Token not found");
     const user = jwt.verify(token, config.jwtSecret);
     if (!user) throw unauthorized();
-    console.log(user.sub);
     return user;
   }
 
