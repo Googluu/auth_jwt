@@ -18,7 +18,7 @@ class UserService {
     return response;
   }
 
-  async login(email, password) {
+  async login(email, password, res) {
     const user = await User.findOne({ email });
     if (!user) throw unauthorized();
     const isPasswordValid = bcrypt.compareSync(password, user.password);
@@ -27,6 +27,12 @@ class UserService {
       sub: user._id,
     };
     const token = jwt.sign(payload, config.jwtSecret, { expiresIn: "1hr" });
+    res.cookie(String(user._id), token, {
+      path: "/",
+      expires: new Date(Date.now() + 1000 * 30),
+      httpOnly: true,
+      sameSite: "lax",
+    });
     return {
       user,
       token,

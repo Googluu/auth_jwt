@@ -20,7 +20,7 @@ const signup = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = await service.login(email, password);
+    const user = await service.login(email, password, res);
     res.status(200).json(user);
   } catch (error) {
     next(error);
