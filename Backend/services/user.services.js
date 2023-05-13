@@ -41,9 +41,8 @@ class UserService {
 
   async verifyToken(cookies) {
     const token = cookies.split("=")[1];
-    console.log(token);
     if (!token) throw notFound("Token not found");
-    const user = jwt.verify(token, config.jwtSecret);
+    const user = jwt.verify(String(token), config.jwtSecret);
     if (!user) throw unauthorized();
     return user;
   }
