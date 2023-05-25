@@ -27,10 +27,10 @@ const login = async (req, res, next) => {
   }
 };
 
-const verifyToken = async (req, res, next) => {
+const verifyToken = async (req, _, next) => {
   try {
     const cookies = req.headers.cookie;
-    // const headers = req.headers["authorization"];
+    console.log(cookies);
     const user = await service.verifyToken(cookies);
     req.sub = user.sub;
   } catch (error) {
