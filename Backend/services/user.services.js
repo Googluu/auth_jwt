@@ -50,6 +50,7 @@ class UserService {
   async getUser(userId) {
     const user = await User.findById(userId, "-password");
     if (!user) throw notFound("User not found");
+    console.log(user);
     return user;
   }
 }
